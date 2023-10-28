@@ -249,6 +249,22 @@ h3 {
 .card {
   margin-bottom: 2rem;
 }
+
+div.row-login{
+  position: relative;
+  width: 100%;
+}
+
+div.login {
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+#id_username, #id_password {
+  width: 90%; 
+}
 ```
 
 Em templates crie o arquivo index.html:
@@ -917,3 +933,149 @@ git pull
 ```
 
 Sempre que criar coisas novas repita os passos do `add` ao `push`.  
+
+
+### Adicionando autenticação simples
+
+Crie templates para login, para isso crie um diretorio chamado registration dentro de acesso/templates:
+
+Dentro de registration crie um arquivo chamado `login.html`
+```html
+{% extends "base_login.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert"
+    aria-hidden="true">
+    </button>
+    <p>Seu usuario e senha podem está incorretos. Tente novamente</p>
+</div>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert"
+        aria-hidden="true">
+        </button>
+        <p>Vocês não tem acesso a essa pagina, autentique-se para conseguir vê-la.</p>
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <p>Por favor, faça login aqui.</p>
+    </div>
+    {% endif %}
+{% endif %}
+<div class="row row-login">
+  <div class="col-6 login">
+    <div class="card">
+      <div class="card-body"> 
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">
+                    {{ form.username.label_tag }}
+                </label>
+                <div class="form-group">
+                    {{ form.username }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">
+                {{ form.password.label_tag }}
+                </label>
+                <div class="form-group">
+                    {{ form.password }}
+                </div>
+            </div>
+        <br/>
+        <input type="submit" value="login" class="btn btn-primary">
+        <input type="hidden" name="next" value="{{ next }}">
+        </form>
+        
+        <p><a href="{% url 'password_reset' %}">Esqueceu a senha?</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+```
+
+Em templates crie um arquivo chamado base_login.html com o seguinte conteudo:
+
+```html
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'acesso/base.css' %}">
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="container">
+      {% block content %}
+			
+		  {% endblock %}
+    </div>
+
+    
+
+    <!-- Latest compiled and minified JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+  </body>
+</html>
+```
+
+Adicione o conteudo abaixo no arquivo `urls.py` da aplicação acesso:
+
+
+```python
+urlpatterns = [
+  # codigo omitido
+  path("contas/", include("django.contrib.auth.urls")),
+]
+```
+
+Em acesso/views.py
+
+Importe o sguinte decorator:
+
+```python
+from django.contrib.auth.decorators import login_required
+```
+
+Adicione o decorator sobre cada um dos metodos de views.py:
+
+```python
+@login_required(login_url="/contas/login/")
+def index(request):
+```
+
+Exemplo de como deve ficar o arquivo views.py:
+
+```python
+from django.shortcuts import render, redirect
+from .models import RegistroAcesso, Visitante
+from .forms import EnderecoForm, VeiculoForm, VisitanteForm, RegistroAcessorForm
+from django.shortcuts import get_object_or_404
+from datetime import datetime
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url="/contas/login/")
+def index(request):
+  acessos = RegistroAcesso.objects.all()
+  context = { "acessos": acessos }
+  return render(request, 'index.html', context)
+```

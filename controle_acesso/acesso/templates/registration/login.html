@@ -1,0 +1,62 @@
+{% extends "base_login.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert"
+    aria-hidden="true">
+    </button>
+    <p>Seu usuario e senha podem está incorretos. Tente novamente</p>
+</div>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert"
+        aria-hidden="true">
+        </button>
+        <p>Vocês não tem acesso a essa pagina, autentique-se para conseguir vê-la.</p>
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <p>Por favor, faça login aqui.</p>
+    </div>
+    {% endif %}
+{% endif %}
+<div class="row row-login">
+  <div class="col-6 login">
+    <div class="card">
+      <div class="card-body"> 
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">
+                    {{ form.username.label_tag }}
+                </label>
+                <div class="form-group">
+                    {{ form.username }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">
+                {{ form.password.label_tag }}
+                </label>
+                <div class="form-group">
+                    {{ form.password }}
+                </div>
+            </div>
+        <br/>
+        <input type="submit" value="login" class="btn btn-primary">
+        <input type="hidden" name="next" value="{{ next }}">
+        </form>
+        
+        <p><a href="{% url 'password_reset' %}">Esqueceu a senha?</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

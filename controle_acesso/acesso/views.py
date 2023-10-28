@@ -3,17 +3,21 @@ from .models import RegistroAcesso, Visitante
 from .forms import EnderecoForm, VeiculoForm, VisitanteForm, RegistroAcessorForm
 from django.shortcuts import get_object_or_404
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url="/contas/login/")
 def index(request):
   acessos = RegistroAcesso.objects.all()
   context = { "acessos": acessos }
   return render(request, 'index.html', context)
 
+@login_required(login_url="/contas/login/")
 def visitantes(request):
   visitantes = Visitante.objects.all()
   context = { "visitantes": visitantes}
   return render(request, 'visitante/index.html', context)
 
+@login_required(login_url="/contas/login/")
 def novo_visitante(request):
   form_endereco = EnderecoForm()
   form_visitante = VisitanteForm()
@@ -36,11 +40,13 @@ def novo_visitante(request):
   context = { "form_endereco": form_endereco, "form_visitante": form_visitante, "form_veiculo": form_veiculo}
   return render(request, 'visitante/new.html', context)
 
+@login_required(login_url="/contas/login/")
 def visitante(request, visitante_id):
   visitante = get_object_or_404(Visitante, id=visitante_id)
   context = { "visitante": visitante }
   return render(request, 'visitante/view.html', context)
 
+@login_required(login_url="/contas/login/")
 def editar_visitante(request, visitante_id):
   visitante = get_object_or_404(Visitante, id=visitante_id)
   form_visitante = VisitanteForm(instance=visitante)
@@ -57,6 +63,7 @@ def editar_visitante(request, visitante_id):
 
   return render(request, 'visitante/edit.html', context)
 
+@login_required(login_url="/contas/login/")
 def registrar_acesso(request):
   form = RegistroAcessorForm()
 
@@ -74,6 +81,7 @@ def registrar_acesso(request):
 
   return render(request, 'acesso/registrar.html', context)
 
+@login_required(login_url="/contas/login/")
 def finalizar_acesso(request, acesso_id):
   acesso = get_object_or_404(RegistroAcesso, id=acesso_id)
   acesso.atualiza_status()

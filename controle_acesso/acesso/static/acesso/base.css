@@ -9,3 +9,19 @@ h3 {
 .card {
   margin-bottom: 2rem;
 }
+
+div.row-login{
+  position: relative;
+  width: 100%;
+}
+
+div.login {
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+#id_username, #id_password {
+  width: 90%; 
+}

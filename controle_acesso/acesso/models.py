@@ -9,7 +9,7 @@ class Pessoa(models.Model):
     ('M', 'Masculino'),
     ('F', 'Feminino')
   )
-  nome = models.CharField(max_length=11, blank=False, null=False)
+  nome = models.CharField(max_length=256, blank=False, null=False)
   cpf = models.CharField(max_length=11, blank=False, null=False)
   telefone = models.CharField(max_length=11, blank=True, null=True)
   genero = models.CharField(max_length=1, choices=SEXO_CHOICES, blank=False, null=False)
@@ -29,6 +29,9 @@ class Funcionario(Pessoa):
   cargo = models.CharField(max_length=256, blank=False, null=False)
   turno = models.CharField(max_length=1, choices=TURNO_CHOICES, blank=False, null=False)
   usuario = models.OneToOneField(User, related_name= 'funcionario', on_delete=models.CASCADE)
+
+  def nome_completo(self):
+    return self.usuario.username + " " + self.usuario.last_name
 
 class Visitante(Pessoa):
   TIPO_CHOICES = (
