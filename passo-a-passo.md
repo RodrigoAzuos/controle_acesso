@@ -76,7 +76,7 @@ class Pessoa(models.Model):
     ('M', 'Masculino'),
     ('F', 'Feminino')
   )
-  nome = models.CharField(max_length=11, blank=False, null=False)
+  nome = models.CharField(max_length=256, blank=False, null=False)
   cpf = models.CharField(max_length=11, blank=False, null=False)
   telefone = models.CharField(max_length=11, blank=True, null=True)
   genero = models.CharField(max_length=1, choices=SEXO_CHOICES, blank=False, null=False)
