@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h2>Criar Visitante</h2>
+  <form method="POST" enctype="multipart/form-data">
+ 
+    <!-- Security token -->
+    {% csrf_token %}
+    
+    
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h3>Dados visitante</h3>
+        </div>
+        
+        {% if form_visitante.errors %}
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">
+            </button>
+            por favor, verifique erros
+            {{ form_visitante.errors }}
+          </div>
+        {% endif %}
+        {{form_visitante}}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h3>Dados endereco</h3>
+        </div>
+        {% if form_endereco.errors %}
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">
+            </button>
+            por favor, verifique erros
+            {{ form_endereco.errors }}
+          </div>
+        {% endif %}
+        {{form_endereco}}
+
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h3>Dados Veículo</h3>
+        </div>
+        {% if form_veiculo.errors %}
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">
+            </button>
+            por favor, verifique erros
+            {{ form_veiculo.errors }}
+          </div>
+        {% endif %}
+        {{form_veiculo}}
+      </div>
+      <div class="card-footer">
+        <input type="submit" value="Salvar" class="btn btn-sm btn-primary">
+        <a href="{% url 'index' %}" class="btn btn-sm btn-secondary">Voltar</a>
+      </div>
+    </div>
+  </form>
+{% endblock %}

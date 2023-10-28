@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h2>Visitantes</h2>
+  <a class="btn btn-sm btn-primary" href="{% url 'novo_visitante' %}">Novo visitante</a>
+
+  <h3>Listagem de visitantes</h3>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Veículo</th>
+        <th scope="col">Data entrada</th>
+				<th scope="col">Hora saída</th>
+        <th scope="col">Status</th>
+				<th scope="col">Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for acesso in acessos %}
+        <tr>
+          <th scope="row">{{acesso.id}}</th>
+          <td>{{ acesso.pessoa.nome}}</td>
+          <td>{{ acesso.veiculo}}</td>
+          <td>{{ acesso.data_hora_entrada}}</td>
+					{% if acesso.data_hora_saida %}
+						<td>{{ acesso.data_hora_saida}}</td>
+					{%else%}
+						<td>-</td>
+					{% endif %}
+					{% if acesso.status == 'E' %}
+						<span class="badge text-bg-warning"><td>{{ acesso.get_status_display}}</td></span>
+					{%else%}
+						<span class="badge text-bg-success"><td>{{ acesso.get_status_display}}</td></span>
+					{% endif %}
+          {% if acesso.status == 'E' %}
+						<td><a href="{% url 'finalizar_acesso' acesso.id %}" class="btn btn-sm btn-success">Finalizar</a></td>
+					{%else%}
+						<td>-</td>
+					{% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

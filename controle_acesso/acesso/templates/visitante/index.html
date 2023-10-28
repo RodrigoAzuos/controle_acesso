@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h2>Visitantes</h2>
+  <a class="btn btn-sm btn-primary" href="{% url 'novo_visitante' %}">Novo visitante</a>
+
+  <h3>Listagem de visitantes</h3>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Telefone</th>
+        <th scope="col">Data nascimento</th>
+        <th scope="col">Acão</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for visitante in visitantes %}
+        <tr>
+          <th scope="row">{{visitante.id}}</th>
+          <td>{{ visitante.nome}}</td>
+          <td>{{ visitante.telefone}}</td>
+          <td>{{ visitante.data_nascimento}}</td>
+          <td><a href="{% url 'visitante' visitante.id %}" class="btn btn-sm btn-secondary">Visualizar</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h2>Visitante</h2>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h3>Dados do visitante</h3>
+          </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><dt>Nome</dt><dd>{{visitante.nome}}</dd></li>
+              <li class="list-group-item"><dt>cpf</dt><dd>{{visitante.cpf}}</dd></li>
+              <li class="list-group-item"><dt>Telefone</dt><dd>{{visitante.telefone}}</dd></li>
+              <li class="list-group-item"><dt>Genero</dt><dd>{{visitante.get_genero_display}}</dd></li>
+              <li class="list-group-item"><dt>Data nascimento</dt><dd>{{visitante.data_nascimento}}</dd></li>
+              <li class="list-group-item"><dt>Tipo</dt><dd>{{visitante.get_tipo_display}}</dd></li>
+              <li class="list-group-item"><a href="{% url 'editar_visitante' visitante.id %}" class="btn btn-sm btn-primary">Editar</a></li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h3>Endereço</h3>
+          </div>
+            {% for endereco in visitante.enderecos.all %}  
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><dt>Logradouro</dt><dd>{{endereco.logradouro}}</dd></li>
+                <li class="list-group-item"><dt>Numero</dt><dd>{{endereco.numero}}</dd></li>
+                <li class="list-group-item"><dt>Bairro</dt><dd>{{endereco.bairro}}</dd></li>
+                <li class="list-group-item"><dt>Cidade</dt><dd>{{endereco.cidade}} - {{endereco.estado}}</dd></li>
+                <li class="list-group-item"><dt>Cep</dt><dd>{{endereco.cep}}</dd></li>
+                <li class="list-group-item"><a href="#" class="btn btn-sm btn-primary">Editar</a></li>
+              </ul>
+            {%endfor%}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row-fluid">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h3>Veículos</h3>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Placa</th>
+              <th scope="col">Cor</th>
+              <th scope="col">modelo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for veiculo in visitante.veiculos.all %}
+              <tr>
+                <th scope="row">{{veiculo.placa}}</th>
+                <td>{{ veiculo.modelo}}</td>
+                <td>{{ veiculo.cor}}</td>
+                <td><a href="#" class="btn btn-sm btn-primary">Editar</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
