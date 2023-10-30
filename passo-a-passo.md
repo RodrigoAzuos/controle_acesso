@@ -911,11 +911,11 @@ git add .
 ```
 
 ```bash
-git commit -m criacao inicial de projeto"
+git commit -m "criacao inicial de projeto"
 ```
 
 ```bash
-git push"
+git push
 ```
 
 # Atualizando projeto em outra maquina
@@ -1078,4 +1078,33 @@ def index(request):
   acessos = RegistroAcesso.objects.all()
   context = { "acessos": acessos }
   return render(request, 'index.html', context)
+```
+
+
+# Adicionando projeto ao git:
+
+```bash
+git add .
+```
+
+```bash
+git commit -m "criacao inicial de projeto"
+```
+
+```bash
+git push
+```
+
+# Atualizando projeto em outra maquina
+
+Já tendo feito o clone:
+
+```bash
+git clone <url do projeto>
+```
+
+Para atualizar na sua maquina local execute:
+
+```bash
+git pull
 ```
