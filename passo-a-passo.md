@@ -319,7 +319,7 @@ Em templates crie o arquivo index.html:
 {% endblock %}
 ```
 
-Se não criou ainda, crie um diretorio/pasta dentro de templates chamado acesso dentro dele serão criados quatro arquivos:
+Se não criou ainda, crie um diretorio/pasta dentro de templates chamado visitante dentro dele serão criados quatro arquivos:
 
 `index.html`
 
